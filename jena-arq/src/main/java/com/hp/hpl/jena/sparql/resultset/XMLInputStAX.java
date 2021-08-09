@@ -52,6 +52,7 @@ import com.hp.hpl.jena.sparql.engine.binding.BindingFactory ;
 import com.hp.hpl.jena.sparql.engine.binding.BindingMap ;
 import com.hp.hpl.jena.sparql.graph.GraphFactory ;
 import com.hp.hpl.jena.sparql.util.LabelToNodeMap ;
+import com.hp.hpl.jena.util.JenaXMLInput;
 
 /**
  * Code that reads an XML Results format and builds the ARQ structure for the
@@ -100,9 +101,8 @@ class XMLInputStAX extends SPARQLResult {
     }
 
     public XMLInputStAX(InputStream in, Model model) {
-        XMLInputFactory xf = XMLInputFactory.newInstance() ;
         try {
-            XMLStreamReader xReader = xf.createXMLStreamReader(in) ;
+            XMLStreamReader xReader = JenaXMLInput.newXMLStreamReader(in); ;
             worker(xReader, model) ;
         } catch (XMLStreamException e) {
             throw new ResultSetException("Can't initialize StAX parsing engine", e) ;
@@ -112,9 +112,8 @@ class XMLInputStAX extends SPARQLResult {
     }
 
     public XMLInputStAX(Reader in, Model model) {
-        XMLInputFactory xf = XMLInputFactory.newInstance() ;
         try {
-            XMLStreamReader xReader = xf.createXMLStreamReader(in) ;
+            XMLStreamReader xReader = JenaXMLInput.newXMLStreamReader(in); ;
             worker(xReader, model) ;
         } catch (XMLStreamException e) {
             throw new ResultSetException("Can't initialize StAX parsing engine", e) ;
@@ -128,10 +127,9 @@ class XMLInputStAX extends SPARQLResult {
     }
 
     public XMLInputStAX(String str, Model model) {
-        XMLInputFactory xf = XMLInputFactory.newInstance() ;
         try {
             Reader r = new StringReader(str) ;
-            XMLStreamReader xReader = xf.createXMLStreamReader(r) ;
+            XMLStreamReader xReader = JenaXMLInput.newXMLStreamReader(r); ;
             worker(xReader, model) ;
         } catch (XMLStreamException e) {
             throw new ResultSetException("Can't initialize StAX parsing engine", e) ;

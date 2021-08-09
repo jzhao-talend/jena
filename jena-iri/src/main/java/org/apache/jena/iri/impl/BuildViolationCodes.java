@@ -20,6 +20,7 @@ package org.apache.jena.iri.impl;
 
 import java.io.File;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -29,8 +30,11 @@ import javax.xml.transform.stream.StreamSource;
 
 public class BuildViolationCodes {
     public static void main(String[] args) throws TransformerException, TransformerFactoryConfigurationError {
-        Transformer xsl =
-        TransformerFactory.newInstance().newTransformer(
+    	TransformerFactory tf = TransformerFactory.newInstance();
+    	tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    	tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+    	Transformer xsl =
+    			tf.newTransformer(
                 new StreamSource(new File("src/main/xml/org/apache/jena/iri/impl/viol2java.xsl"))
                 );
         xsl.transform(

@@ -18,6 +18,7 @@
 
 package com.hp.hpl.jena.rdfxml.xmlinput;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -98,6 +99,8 @@ public class DOM2Model extends SAX2Model {
 
         // Run transform
         TransformerFactory xformFactory = TransformerFactory.newInstance();
+        xformFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        xformFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         try {
             Transformer idTransform = xformFactory.newTransformer();
             idTransform.transform(input, output);

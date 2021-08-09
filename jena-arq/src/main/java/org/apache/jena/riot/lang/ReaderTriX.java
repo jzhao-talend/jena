@@ -23,33 +23,40 @@ import static org.apache.jena.riot.lang.ReaderTriX.State.OUTER ;
 import static org.apache.jena.riot.lang.ReaderTriX.State.TRIPLE ;
 import static org.apache.jena.riot.lang.ReaderTriX.State.TRIX ;
 
-import java.io.InputStream ;
-import java.io.Reader ;
-import java.util.ArrayList ;
-import java.util.Collection ;
-import java.util.List ;
-import java.util.Objects ;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
-import javax.xml.namespace.QName ;
-import javax.xml.stream.* ;
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
-import org.apache.jena.atlas.web.ContentType ;
-import org.apache.jena.riot.ReaderRIOT ;
-import org.apache.jena.riot.RiotException ;
-import org.apache.jena.riot.system.* ;
-import org.apache.jena.riot.writer.StreamWriterTriX ;
-import org.apache.jena.riot.writer.WriterTriX ;
+import org.apache.jena.atlas.web.ContentType;
+import org.apache.jena.riot.ReaderRIOT;
+import org.apache.jena.riot.RiotException;
+import org.apache.jena.riot.system.ErrorHandler;
+import org.apache.jena.riot.system.ErrorHandlerFactory;
+import org.apache.jena.riot.system.ParserProfile;
+import org.apache.jena.riot.system.RiotLib;
+import org.apache.jena.riot.system.StreamRDF;
+import org.apache.jena.riot.writer.StreamWriterTriX;
+import org.apache.jena.riot.writer.WriterTriX;
 
-import com.hp.hpl.jena.datatypes.RDFDatatype ;
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype ;
-import com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType ;
-import com.hp.hpl.jena.graph.Node ;
-import com.hp.hpl.jena.graph.NodeFactory ;
-import com.hp.hpl.jena.graph.Triple ;
-import com.hp.hpl.jena.sparql.core.Quad ;
-import com.hp.hpl.jena.sparql.resultset.ResultSetException ;
-import com.hp.hpl.jena.sparql.util.Context ;
-import com.hp.hpl.jena.vocabulary.RDF ;
+import com.hp.hpl.jena.datatypes.RDFDatatype;
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.sparql.core.Quad;
+import com.hp.hpl.jena.sparql.util.Context;
+import com.hp.hpl.jena.util.JenaXMLInput;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 /** Read TriX.
  *  See {@link TriX} for details. 
@@ -81,22 +88,20 @@ public class ReaderTriX implements ReaderRIOT {
     
     @Override
     public void read(InputStream in, String baseURI, ContentType ct, StreamRDF output, Context context) {
-        XMLInputFactory xf = XMLInputFactory.newInstance() ;
-        XMLStreamReader xReader ;
+        XMLStreamReader xReader;
         try {
-            xReader = xf.createXMLStreamReader(in) ;
-        } catch (XMLStreamException e) { throw new RiotException("Can't initialize StAX parsing engine", e) ; }
-        read(xReader,  baseURI, output) ;
+            xReader = JenaXMLInput.newXMLStreamReader(in);
+        } catch (XMLStreamException e) { throw new RiotException("Can't initialize StAX parsing engine", e); }
+        read(xReader,  baseURI, output);
     }
         
     @Override
     public void read(Reader reader, String baseURI, ContentType ct, StreamRDF output, Context context) {
-        XMLInputFactory xf = XMLInputFactory.newInstance() ;
-        XMLStreamReader xReader ;
+        XMLStreamReader xReader;
         try {
-            xReader = xf.createXMLStreamReader(reader) ;
-        } catch (XMLStreamException e) { throw new ResultSetException("Can't initialize StAX parsing engine", e) ; } 
-        read(xReader,  baseURI, output) ;
+            xReader = JenaXMLInput.newXMLStreamReader(reader);
+        } catch (XMLStreamException e) { throw new RiotException("Can't initialize StAX parsing engine", e); }
+        read(xReader,  baseURI, output);
     }
     
     private static String nsRDF = RDF.getURI() ;

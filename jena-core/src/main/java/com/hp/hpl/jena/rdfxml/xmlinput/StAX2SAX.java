@@ -19,6 +19,8 @@
 package com.hp.hpl.jena.rdfxml.xmlinput;
 
 import java.util.Iterator;
+
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -41,6 +43,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.hp.hpl.jena.util.JenaXMLInput;
+
 /**
  * 
  * Bridge StAX and SAX parsing.
@@ -62,7 +66,8 @@ public class StAX2SAX {
         this.lhandler = (handler instanceof LexicalHandler) ?
                 (LexicalHandler) handler :
                 NO_LEXICAL_HANDLER ;
-        this.xef = XMLInputFactory.newInstance();
+        this.xef = JenaXMLInput.newXMLInputFactory();
+
     }
     
     // I'd be happier doing stream reader, but we can only convert this way
